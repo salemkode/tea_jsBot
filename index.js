@@ -6,6 +6,7 @@ String.prototype.replaceAll = function replaceAll(search, replace) {
     return this.split(search).join(replace);
 }
 
+const licenseUrl = "https://ojuba.org/waqf-2.0:%D8%B1%D8%AE%D8%B5%D8%A9_%D9%88%D9%82%D9%81_%D8%A7%D9%84%D8%B9%D8%A7%D9%85%D8%A9";
 let {eat, drink, word} = require('./src/lists');
 
 const adminID = "635096382";
@@ -19,42 +20,54 @@ const bot = new Telegraf(process.env.BOT_TOKEN || getApi());
 const buttons = Markup.inlineKeyboard([
     [
         Markup.button.url('المطور', 'https://t.me/suprtastorh'),
+        Markup.button.url("الرخصة", licenseUrl)
+    ],
+    [
+        Markup.button.callback("ادعمنا", "supportMe"),
         Markup.button.callback("الداعمين", "Supporter")
     ],
-    [Markup.button.callback("ادعمنا", "supportMe")],
     [Markup.button.callback("قائمة عبود", "menu")],
 ])
 
+bot.launch().then(() => start());
+
 bot.command("about", ctx => {
-    ctx.reply(`بوت عبود هو بوت للتسلية داخل المجموعات 
-    البوت مجاني تماما و مفتوح المصدر
-   
-   لذالك نروج منك دعمنا حتى نستمر ب تجربة بوت خالي تماما من الاعلانات
+    if (ctx.message.chat.type !== 'supergroup') {
+        ctx.reply(`بوت عبود هو بوت للتسلية داخل المجموعات 
+البوت مجاني تماما و مفتوح المصدر
+
+لذالك نروج منك دعمنا حتى نستمر ب تجربة بوت خالي تماما من الاعلانات
     `, buttons);
+    } else {
+        ctx.reply("لاتعمل الرساله في المجموعات تواصل معي خاص" + " @" + bot.botInfo.username)
+    }
 })
 
 bot.action("Supporter", ctx => {
     let chat = ctx.update.callback_query.message.chat.id;
     let message = ctx.update.callback_query.message.message_id;
-    bot.telegram.deleteMessage(chat, message)
-    bot.telegram.sendMessage(chat, "الداعمين هم السبب الرائيسي في عمل البوت الخاص بنا وهم" + "\n\n" + Supporter())
+    let keyBord = Markup.inlineKeyboard([
+        [Markup.button.callback("ادعمنا", "supportMe")]
+    ]);
+    deleteMessage(chat, message)
+    sendMessage(chat, "الداعمين هم السبب الرائيسي في عمل البوت الخاص بنا وهم" + "\n\n" + Supporter(), keyBord)
     return ctx.update.callback_query;
 })
 
 bot.action("menu", ctx => {
     let chat = ctx.update.callback_query.message.chat.id;
     let message = ctx.update.callback_query.message.message_id;
-    bot.telegram.deleteMessage(chat, message)
+    deleteMessage(chat, message)
     let {to} = require("./src/lists").word;
-    bot.telegram.sendMessage(chat, to[2])
+    sendMessage(chat, to[2])
     return ctx.update.callback_query;
 })
 
 bot.action("supportMe", ctx => {
     let chat = ctx.update.callback_query.message.chat.id;
     let message = ctx.update.callback_query.message.message_id;
-    bot.telegram.deleteMessage(chat, message)
-    bot.telegram.sendMessage(chat, "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @superastorh")
+    deleteMessage(chat, message)
+    sendMessage(chat, "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @superastorh")
     return ctx.update.callback_query;
 })
 
@@ -78,7 +91,7 @@ bot.on('text', (ctx) => {
     if (-1 !== wordIndex) {
         replayId(ctx, word.to[wordIndex])
 
-    } else if (!checker(txt)) {
+    } else if (checker(txt)) {
         txt = txt.replace("عبود", "");
 
         let replay;
@@ -100,17 +113,23 @@ bot.on('text', (ctx) => {
     }
 })
 
-bot.launch().then(() => start());
-
 function start() {
-    bot.telegram.sendMessage(adminID, "اشتغل بوت" + "\n @" + bot.botInfo.username, {});
+    sendMessage(adminID, "اشتغل بوت" + "\n @" + bot.botInfo.username, {});
 }
 
 function stop(stop) {
     if (stop) bot.stop(stop).then();
-    bot.telegram.sendMessage(adminID, "تقفل بوت" + "\n @" + bot.botInfo.username);
+    sendMessage(adminID, "تقفل بوت" + "\n @" + bot.botInfo.username);
 }
 
 process.once('SIGINT', () => stop('SIGINT'));
 
 process.once('SIGTERM', () => stop('SIGTERM'));
+
+function deleteMessage(chat_id, message_id) {
+    bot.telegram.deleteMessage(chat_id, message_id).then()
+}
+
+function sendMessage(chatId , text , extra = {} ) {
+    bot.telegram.sendMessage(chatId, text, extra).then()
+}
