@@ -1,0 +1,17 @@
+{
+  "name": "teashopbot",
+  "version": "1.0.0",
+  "description": "bot telegram (عبودي)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "superastorh",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "prompt-sync": "^4.2.0",
+    "telegraf": "^4.2.1"
+  }
+}
