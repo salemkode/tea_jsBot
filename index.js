@@ -19,7 +19,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN || getApi());
 
 const buttons = Markup.inlineKeyboard([
     [
-        Markup.button.url('المطور', 'https://t.me/suprtastorh'),
+        Markup.button.url('المطور', 'https://t.me/superastorh'),
         Markup.button.url("الرخصة", licenseUrl)
     ],
     [
@@ -121,6 +121,7 @@ function deleteMessage(chat_id, message_id) {
 function sendMessage(chatId , text , extra = {} ) {
     bot.telegram.sendMessage(chatId, text, extra).then()
 }
+
 
 function action(ctx , message , extra = {}){
     let chat = ctx.update.callback_query.message.chat.id;
