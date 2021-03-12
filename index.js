@@ -44,31 +44,19 @@ bot.command("about", ctx => {
 })
 
 bot.action("Supporter", ctx => {
-    let chat = ctx.update.callback_query.message.chat.id;
-    let message = ctx.update.callback_query.message.message_id;
     let keyBord = Markup.inlineKeyboard([
         [Markup.button.callback("ادعمنا", "supportMe")]
     ]);
-    deleteMessage(chat, message)
-    sendMessage(chat, "الداعمين هم السبب الرائيسي في عمل البوت الخاص بنا وهم" + "\n\n" + Supporter(), keyBord)
-    return ctx.update.callback_query;
+    action(ctx, "الداعمين هم السبب الرائيسي في عمل البوت الخاص بنا وهم" + "\n\n" + Supporter(), keyBord)
 })
 
 bot.action("menu", ctx => {
-    let chat = ctx.update.callback_query.message.chat.id;
-    let message = ctx.update.callback_query.message.message_id;
-    deleteMessage(chat, message)
     let {to} = require("./src/lists").word;
-    sendMessage(chat, to[2])
-    return ctx.update.callback_query;
+    action(ctx, to[2])
 })
 
 bot.action("supportMe", ctx => {
-    let chat = ctx.update.callback_query.message.chat.id;
-    let message = ctx.update.callback_query.message.message_id;
-    deleteMessage(chat, message)
-    sendMessage(chat, "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @superastorh")
-    return ctx.update.callback_query;
+    action(ctx, "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @superastorh")
 })
 
 bot.hears(['عبود', 'ياعبود', "عبودي", "ياعبودي"], (ctx) => ctx.reply('معك معلم'))
@@ -132,4 +120,11 @@ function deleteMessage(chat_id, message_id) {
 
 function sendMessage(chatId , text , extra = {} ) {
     bot.telegram.sendMessage(chatId, text, extra).then()
+}
+
+function action(ctx , message , extra = {}){
+    let chat = ctx.update.callback_query.message.chat.id;
+    let messageId = ctx.update.callback_query.message.message_id;
+    deleteMessage(chat, messageId)
+    sendMessage(chat, message , extra)
 }
