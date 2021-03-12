@@ -19,7 +19,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN || getApi());
 
 const buttons = Markup.inlineKeyboard([
     [
-        Markup.button.url('المطور', 'https://t.me/suprtastorh'),
+        Markup.button.url('المطور', 'https://t.me/superastorh'),
         Markup.button.url("الرخصة", licenseUrl)
     ],
     [
