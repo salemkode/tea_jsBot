@@ -1,5 +1,3 @@
-"use strict";
-
 require("dotenv").config();
 
 String.prototype.replaceAll = function replaceAll(search, replace) {
