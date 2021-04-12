@@ -15,7 +15,6 @@ const adminID = "635096382";
 const { Telegraf, Markup } = require("telegraf");
 
 const {
-  getApi,
   checker,
   drinkReplay,
   eatReplay,
@@ -167,4 +166,18 @@ function action(ctx, message, extra = {}) {
   let messageId = ctx.update.callback_query.message.message_id;
   deleteMessage(chat, messageId);
   sendMessage(chat, message, extra);
+}
+
+function getApi() {
+  const prompt = require("prompt-sync")();
+
+  const fs = require("fs");
+
+  const api = prompt("What is your api bot? => ");
+
+  const content = "BOT_TOKEN=" + api;
+
+  fs.writeFile("./.env", content, (err) => {});
+
+  return api;
 }

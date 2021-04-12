@@ -49,20 +49,6 @@ module.exports = {
     return array[Math.floor(Math.random() * array.length)];
   },
 
-  getApi() {
-    const prompt = require("prompt-sync")();
-
-    const fs = require("fs");
-
-    const api = prompt("What is your api bot? => ");
-
-    const content = "BOT_TOKEN=" + api;
-
-    fs.writeFile("./.env", content, (err) => {});
-
-    return api;
-  },
-
   replayId(
     ctx,
     txt,
