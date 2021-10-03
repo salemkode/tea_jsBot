@@ -56,6 +56,7 @@ bot.command("about", (ctx) => {
     );
   }
 });
+
 bot.action("myBots", (ctx) => {
   let keyBord = Markup.inlineKeyboard([
     [Markup.button.url("بوت مذكر", "https://t.me/muzakerBot")],
@@ -99,43 +100,42 @@ bot.action("supportMe", (ctx) => {
     back
   );
 });
+
 bot.action("about", (ctx) => {
   action(ctx, about, buttons);
 });
 
-bot.hears(["عبود", "ياعبود", "عبودي", "ياعبودي"], (ctx) =>
-  ctx.reply("معك معلم")
-);
-
-bot.hears("تسلم", (ctx) => {
-  if (
-    ctx.message.reply_to_message &&
-    ctx.message.reply_to_message.from.username === bot.botInfo.username
-  ) {
-    replayId(ctx, "لا شكر على واجب");
-  }
-});
 
 bot.on("text", (ctx) => {
-  let txt = ctx.message.text;
+  let text = ctx.message.text;
+  if(text in ["عبود", "ياعبود", "عبودي", "ياعبودي"]){
+    ctx.reply("معك معلم")
+  }
+  if(text === "تسلم"){
+    if (
+      ctx.message.reply_to_message &&
+      ctx.message.reply_to_message.from.username === bot.botInfo.username
+    ) {
+      replayId(ctx, "لا شكر على واجب");
+    }
+  }
+  text = replace(text);
 
-  txt = replace(txt);
-
-  let wordIndex = word.from.indexOf(txt);
+  let wordIndex = word.from.indexOf(text);
 
   if (-1 !== wordIndex) {
     replayId(ctx, word.to[wordIndex]);
-  } else if (checker(txt)) {
-    txt = txt.replace("عبود", "");
+  } else if (checker(text)) {
+    text = text.replace("عبود", "");
 
     let replay;
 
-    if (-1 !== drink.ls1.indexOf(txt)) {
-      replay = drinkReplay(drink.ls1.indexOf(txt));
+    if (-1 !== drink.ls1.indexOf(text)) {
+      replay = drinkReplay(drink.ls1.indexOf(text));
 
       replayId(ctx, replay);
-    } else if (-1 !== eat.ls1.indexOf(txt)) {
-      replay = eatReplay(eat.ls1.indexOf(txt));
+    } else if (-1 !== eat.ls1.indexOf(text)) {
+      replay = eatReplay(eat.ls1.indexOf(text));
 
       replayId(ctx, replay);
     }
@@ -144,10 +144,11 @@ bot.on("text", (ctx) => {
 
 function start() {
   sendMessage(adminID, "اشتغل بوت" + "\n @" + bot.botInfo.username, {});
+  console.debug("project run")
 }
 
 function stop(stop) {
-  if (stop) bot.stop(stop).then();
+  if (stop) bot.stop(stop)
   sendMessage(adminID, "تقفل بوت" + "\n @" + bot.botInfo.username);
 }
 
@@ -156,11 +157,11 @@ process.once("SIGINT", () => stop("SIGINT"));
 process.once("SIGTERM", () => stop("SIGTERM"));
 
 function deleteMessage(chat_id, message_id) {
-  bot.telegram.deleteMessage(chat_id, message_id).then();
+  bot.telegram.deleteMessage(chat_id, message_id)
 }
 
 function sendMessage(chatId, text, extra = {}) {
-  bot.telegram.sendMessage(chatId, text, extra).then();
+  bot.telegram.sendMessage(chatId, text, extra)
 }
 
 function action(ctx, message, extra = {}) {
