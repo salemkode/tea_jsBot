@@ -107,7 +107,7 @@ bot.action('about', (ctx) => {
 
 bot.on('text', (ctx) => {
   let text = ctx.message.text
-  if (text in ['عبود', 'ياعبود', 'عبودي', 'ياعبودي']) {
+  if (['عبود', 'ياعبود', 'عبودي', 'ياعبودي'].includes(text)) {
     ctx.reply('معك معلم')
   }
   if (text === 'تسلم') {
