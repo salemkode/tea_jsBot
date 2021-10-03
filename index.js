@@ -30,7 +30,7 @@ const about = `بوت عبود هو بوت للتسلية داخل المجمو�
 const back = Markup.inlineKeyboard([Markup.button.callback("رجوع", "about")]);
 const buttons = Markup.inlineKeyboard([
   [
-    Markup.button.url("المطور", "https://t.me/superastorh"),
+    Markup.button.url("المطور", "https://t.me/salemkode"),
     Markup.button.url("الرخصة", licenseUrl),
   ],
   [
@@ -66,7 +66,7 @@ bot.action("myBots", (ctx) => {
   ]);
   action(
     ctx,
-    "البوتات الاخرى التي تم صنعناها وهي من تطوير @superastorh",
+    "البوتات الاخرى التي تم صنعناها وهي من تطوير @salemkode",
     keyBord
   );
 });
@@ -95,7 +95,7 @@ bot.action("menu", (ctx) => {
 bot.action("supportMe", (ctx) => {
   action(
     ctx,
-    "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @superastorh",
+    "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @salemkode",
     back
   );
 });
