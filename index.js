@@ -1,16 +1,16 @@
-require("dotenv").config();
+require('dotenv').config()
 
-String.prototype.replaceAll = function replaceAll(search, replace) {
-  return this.split(search).join(replace);
-};
+String.prototype.replaceAll = function replaceAll (search, replace) {
+  return this.split(search).join(replace)
+}
 
 const licenseUrl =
-  "https://ojuba.org/waqf-2.0:%D8%B1%D8%AE%D8%B5%D8%A9_%D9%88%D9%82%D9%81_%D8%A7%D9%84%D8%B9%D8%A7%D9%85%D8%A9";
-let { eat, drink, word } = require("./src/lists");
+  'https://ojuba.org/waqf-2.0:%D8%B1%D8%AE%D8%B5%D8%A9_%D9%88%D9%82%D9%81_%D8%A7%D9%84%D8%B9%D8%A7%D9%85%D8%A9'
+const { eat, drink, word } = require('./src/lists')
 
-const adminID = "635096382";
+const adminID = '635096382'
 
-const { Telegraf, Markup } = require("telegraf");
+const { Telegraf, Markup } = require('telegraf')
 
 const {
   checker,
@@ -18,28 +18,28 @@ const {
   eatReplay,
   replace,
   replayId,
-  Supporter,
-} = require("./src/lib");
+  Supporter
+} = require('./src/lib')
 
-const bot = new Telegraf(process.env.BOT_TOKEN || getApi());
+const bot = new Telegraf(process.env.BOT_TOKEN || getApi())
 const about = `بوت عبود هو بوت للتسلية داخل المجموعات 
 البوت مجاني تماما و مفتوح المصدر
 
 لذالك نروج منك دعمنا حتى نستمر ب تجربة بوت خالي تماما من الاعلانات
-`;
-const back = Markup.inlineKeyboard([Markup.button.callback("رجوع", "about")]);
+`
+const back = Markup.inlineKeyboard([Markup.button.callback('رجوع', 'about')])
 const buttons = Markup.inlineKeyboard([
   [
-    Markup.button.url("المطور", "https://t.me/salemkode"),
-    Markup.button.url("الرخصة", licenseUrl),
+    Markup.button.url('المطور', 'https://t.me/salemkode'),
+    Markup.button.url('الرخصة', licenseUrl)
   ],
   [
-    Markup.button.callback("ادعمنا", "supportMe"),
-    Markup.button.callback("الداعمين", "Supporter"),
+    Markup.button.callback('ادعمنا', 'supportMe'),
+    Markup.button.callback('الداعمين', 'Supporter')
   ],
-  [Markup.button.callback("بوتات اخرى من صنعنا", "myBots")],
-  [Markup.button.callback("قائمة عبود", "menu")],
-]);
+  [Markup.button.callback('بوتات اخرى من صنعنا', 'myBots')],
+  [Markup.button.callback('قائمة عبود', 'menu')]
+])
 
 bot.telegram.getMe().then(async (botInfo) => {
   bot.options.username = botInfo.username
@@ -47,140 +47,139 @@ bot.telegram.getMe().then(async (botInfo) => {
   start()
 })
 
-bot.command("about", (ctx) => {
-  if (ctx.message.chat.type !== "supergroup") {
-    ctx.reply(about, buttons);
+bot.command('about', (ctx) => {
+  if (ctx.message.chat.type !== 'supergroup') {
+    ctx.reply(about, buttons)
   } else {
     ctx.reply(
-      "لاتعمل الرساله في المجموعات تواصل معي خاص" + " @" + bot.botInfo.username
-    );
+      'لاتعمل الرساله في المجموعات تواصل معي خاص' + ' @' + bot.botInfo.username
+    )
   }
-});
+})
 
-bot.action("myBots", (ctx) => {
-  let keyBord = Markup.inlineKeyboard([
-    [Markup.button.url("بوت مذكر", "https://t.me/muzakerBot")],
+bot.action('myBots', (ctx) => {
+  const keyBord = Markup.inlineKeyboard([
+    [Markup.button.url('بوت مذكر', 'https://t.me/muzakerBot')],
     [
-      Markup.button.callback("ادعمنا", "supportMe"),
-      Markup.button.callback("رجوع", "about"),
-    ],
-  ]);
+      Markup.button.callback('ادعمنا', 'supportMe'),
+      Markup.button.callback('رجوع', 'about')
+    ]
+  ])
   action(
     ctx,
-    "البوتات الاخرى التي تم صنعناها وهي من تطوير @salemkode",
+    'البوتات الاخرى التي تم صنعناها وهي من تطوير @salemkode',
     keyBord
-  );
-});
+  )
+})
 
-bot.action("Supporter", (ctx) => {
-  let keyBord = Markup.inlineKeyboard([
+bot.action('Supporter', (ctx) => {
+  const keyBord = Markup.inlineKeyboard([
     [
-      Markup.button.callback("ادعمنا", "supportMe"),
-      Markup.button.callback("رجوع", "about"),
-    ],
-  ]);
+      Markup.button.callback('ادعمنا', 'supportMe'),
+      Markup.button.callback('رجوع', 'about')
+    ]
+  ])
   action(
     ctx,
-    "الداعمين هم السبب الرائيسي في عمل البوت الخاص بنا وهم" +
-      "\n\n" +
+    'الداعمين هم السبب الرائيسي في عمل البوت الخاص بنا وهم' +
+      '\n\n' +
       Supporter(),
     keyBord
-  );
-});
+  )
+})
 
-bot.action("menu", (ctx) => {
-  let { to } = require("./src/lists").word;
-  action(ctx, to[2], back);
-});
+bot.action('menu', (ctx) => {
+  const { to } = require('./src/lists').word
+  action(ctx, to[2], back)
+})
 
-bot.action("supportMe", (ctx) => {
+bot.action('supportMe', (ctx) => {
   action(
     ctx,
-    "اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @salemkode",
+    'اذا كنت ترغب بدعمنا نرجو منك التواصل مع مطور البوت لمعرفة التفاضيل الازمة \n مطور البوت : @salemkode',
     back
-  );
-});
+  )
+})
 
-bot.action("about", (ctx) => {
-  action(ctx, about, buttons);
-});
+bot.action('about', (ctx) => {
+  action(ctx, about, buttons)
+})
 
-
-bot.on("text", (ctx) => {
-  let text = ctx.message.text;
-  if(text in ["عبود", "ياعبود", "عبودي", "ياعبودي"]){
-    ctx.reply("معك معلم")
+bot.on('text', (ctx) => {
+  let text = ctx.message.text
+  if (text in ['عبود', 'ياعبود', 'عبودي', 'ياعبودي']) {
+    ctx.reply('معك معلم')
   }
-  if(text === "تسلم"){
+  if (text === 'تسلم') {
     if (
       ctx.message.reply_to_message &&
       ctx.message.reply_to_message.from.username === bot.botInfo.username
     ) {
-      replayId(ctx, "لا شكر على واجب");
+      replayId(ctx, 'لا شكر على واجب')
     }
   }
-  text = replace(text);
+  text = replace(text)
 
-  let wordIndex = word.from.indexOf(text);
+  const wordIndex = word.from.indexOf(text)
 
-  if (-1 !== wordIndex) {
-    replayId(ctx, word.to[wordIndex]);
+  if (wordIndex !== -1) {
+    replayId(ctx, word.to[wordIndex])
   } else if (checker(text)) {
-    text = text.replace("عبود", "");
+    text = text.replace('عبود', '')
 
-    let replay;
+    let replay
 
-    if (-1 !== drink.ls1.indexOf(text)) {
-      replay = drinkReplay(drink.ls1.indexOf(text));
+    if (drink.ls1.indexOf(text) !== -1) {
+      replay = drinkReplay(drink.ls1.indexOf(text))
 
-      replayId(ctx, replay);
-    } else if (-1 !== eat.ls1.indexOf(text)) {
-      replay = eatReplay(eat.ls1.indexOf(text));
+      replayId(ctx, replay)
+    } else if (eat.ls1.indexOf(text) !== -1) {
+      replay = eatReplay(eat.ls1.indexOf(text))
 
-      replayId(ctx, replay);
+      replayId(ctx, replay)
     }
   }
-});
+})
 
-function start() {
-  sendMessage(adminID, "اشتغل بوت" + "\n @" + bot.botInfo.username, {});
-  console.debug("project run")
+function start () {
+  sendMessage(adminID, 'اشتغل بوت' + '\n @' + bot.botInfo.username, {})
+  console.debug('project run')
 }
 
-function stop(stop) {
+function stop (stop) {
   if (stop) bot.stop(stop)
-  sendMessage(adminID, "تقفل بوت" + "\n @" + bot.botInfo.username);
+  sendMessage(adminID, 'تقفل بوت' + '\n @' + bot.botInfo.username)
 }
 
-process.once("SIGINT", () => stop("SIGINT"));
+process.once('SIGINT', () => stop('SIGINT'))
 
-process.once("SIGTERM", () => stop("SIGTERM"));
+process.once('SIGTERM', () => stop('SIGTERM'))
 
-function deleteMessage(chat_id, message_id) {
+function deleteMessage (chat_id, message_id) {
   bot.telegram.deleteMessage(chat_id, message_id)
 }
 
-function sendMessage(chatId, text, extra = {}) {
+function sendMessage (chatId, text, extra = {}) {
   bot.telegram.sendMessage(chatId, text, extra)
 }
 
-function action(ctx, message, extra = {}) {
-  let chat = ctx.update.callback_query.message.chat.id;
-  let messageId = ctx.update.callback_query.message.message_id;
-  deleteMessage(chat, messageId);
-  sendMessage(chat, message, extra);
+function action (ctx, message, extra = {}) {
+  const chat = ctx.update.callback_query.message.chat.id
+  const messageId = ctx.update.callback_query.message.message_id
+  deleteMessage(chat, messageId)
+  sendMessage(chat, message, extra)
 }
 
-function getApi() {
-  const prompt = require("prompt-sync")();
+function getApi () {
+  const prompt = require('prompt-sync')()
 
-  const fs = require("fs");
+  const fs = require('fs')
 
-  const api = prompt("What is your api bot? => ");
+  const api = prompt('What is your api bot? => ')
 
-  const content = "BOT_TOKEN=" + api;
+  const content = 'BOT_TOKEN=' + api
 
-  fs.writeFile("./.env", content, (err) => {});
+  fs.writeFile('./.env', content, (err) => {})
 
-  return api;
+  return api
 }
