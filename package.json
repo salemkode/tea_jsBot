@@ -7,7 +7,7 @@
     "start": "node index.js",
     "prettier": "npx prettier --write ."
   },
-  "author": "superastorh",
+  "author": "salemkode",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",

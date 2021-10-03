@@ -5,7 +5,7 @@
 1- download this repo
 
 ```bash
-$ git clone https://github.com/superastorh/tea_jsBot.git
+$ git clone https://github.com/salemkode/tea_jsBot.git
 ```
 
 2- install this bot
