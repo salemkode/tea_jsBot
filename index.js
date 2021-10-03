@@ -41,7 +41,11 @@ const buttons = Markup.inlineKeyboard([
   [Markup.button.callback("قائمة عبود", "menu")],
 ]);
 
-bot.launch().then(() => start());
+bot.telegram.getMe().then(async (botInfo) => {
+  bot.options.username = botInfo.username
+  await bot.launch()
+  start()
+})
 
 bot.command("about", (ctx) => {
   if (ctx.message.chat.type !== "supergroup") {
